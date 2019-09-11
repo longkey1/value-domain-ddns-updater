@@ -1,7 +1,10 @@
 # value-domain-ddns-updater
 
 ## Usage
-  update.sh [<options>]
+
+```
+$ update.sh [options]
+```
 
 ## Options
 
@@ -9,4 +12,3 @@
 - `-h` target host name
 - `-p` password for value domain ddns update
 - `-l` log file
-- `-h` print this
