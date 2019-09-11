@@ -2,11 +2,6 @@
 
 # functions
 function usage() {
-  echo "usage:"
-  echo "${0} [-d domain] [-h host] [-p password] [-l logfile] [-x execute]"
-  exit 1
-}
-function usage() {
   cat <<EOF
 $(basename ${0}) is a tool for ...
 Usage:
@@ -30,20 +25,19 @@ function log() {
 }
 function update() {
   local _dns_ip="$(host ${HOST}.${DOMAIN} | cut -d ' ' -f 4)"
-  local _current_global_ip=$(curl -s ifconfig.io)
+  local _current_ip=$(curl -s ifconfig.io)
   stat="skipped"
-  if [ ! "${_dns_ip}" = "${_current_global_ip}" ]; then
+  if [ ! "${_dns_ip}" = "${_current_ip}" ]; then
     stat="updated"
-    if [ -z "${FLAG_EXEC}" ]; then
-      local _res=$(wget -O - 'https://dyn.value-domain.com/cgi-bin/dyn.fcg?d=${DOMAIN}&p={$PASSWORD}&h=${HOST}')
-      if [ ! echo ${_res} | grep 'status=0' >/dev/null ]; then
+    if [ ! -z "${FLAG_EXEC}" ]; then
+      local _res=$(wget -O - "https://dyn.value-domain.com/cgi-bin/dyn.fcg?d=${DOMAIN}&p=${PASSWORD}&h=${HOST}")
+      if ! echo ${_res} | grep 'status=0' > /dev/null; then
         stat="failed"
       fi
     fi
   fi
-  log "${_current_global_ip} ${stat}"
 
-  echo ${_last_backup_date}
+  log "${stat}. dns: ${_dns_ip} current: ${_current_ip}"
 }
 
 
