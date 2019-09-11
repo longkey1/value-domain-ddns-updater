@@ -24,7 +24,7 @@ function log() {
   echo -e "$(date '+%Y-%m-%dT%H:%M:%S') ${_dry_run}$@"| tee -a ${LOG_FILE}
 }
 function update() {
-  local _dns_ip="$(host ${HOST}.${DOMAIN} | cut -d ' ' -f 4)"
+  local _dns_ip="$(dig ${HOST}.${DOMAIN} +short)"
   local _current_ip=$(curl -s ifconfig.io)
   stat="skipped"
   if [ ! "${_dns_ip}" = "${_current_ip}" ]; then
