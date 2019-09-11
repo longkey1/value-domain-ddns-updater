@@ -1,8 +1,23 @@
 #!/usr/bin/env bash
 
+# functions
 function usage() {
   echo "usage:"
   echo "${0} [-d domain] [-h host] [-p password] [-l logfile] [-x execute]"
+  exit 1
+}
+function usage() {
+  cat <<EOF
+$(basename ${0}) is a tool for ...
+Usage:
+  $(basename ${0}) [<options>]
+Options:
+  -d  target domain
+  -h  target host name
+  -p  password for value domain ddns update
+  -l  log file
+  -h  print this
+EOF
   exit 1
 }
 function log() {
